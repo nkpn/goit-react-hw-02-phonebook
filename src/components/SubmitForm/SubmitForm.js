@@ -4,9 +4,6 @@ import shortid from 'shortid';
 import PropTypes from 'prop-types';
 
 class SubmitForm extends Component {
-  static propTypes = {
-    submitMethod: PropTypes.func.isRequired,
-  };
   state = { name: '', number: '', id: '' };
 
   uniqeID = shortid();
@@ -16,15 +13,29 @@ class SubmitForm extends Component {
     this.setState({ [name]: value, id: id });
   };
 
-  handeSubmit = event => {
+  handleSubmit = event => {
     event.preventDefault();
+
+    //* Передаем в пропс чтоб прочитать в App
+    this.props.submittedProps({
+      name: event.currentTarget.name.value,
+      number: event.currentTarget.number.value,
+      id: shortid(),
+    });
+
+    console.log(this.props);
+    this.reset();
+  };
+
+  reset = () => {
+    this.setState({ name: '', number: '', id: '' });
   };
 
   render() {
     return (
       <>
         <div className={s.Div}>
-          <form className={s.Form}>
+          <form className={s.Form} onSubmit={this.handleSubmit}>
             <label className={s.Label} htmlFor={this.uniqeID}>
               Name
               <input
@@ -54,7 +65,7 @@ class SubmitForm extends Component {
               />
             </label>
             <button type="submit" className={s.Button}>
-              Submit
+              Add to contacts
             </button>
           </form>
         </div>
