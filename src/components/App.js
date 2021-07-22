@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
 import notify from 'helpers/Toast';
 import { ToastContainer } from 'react-toastify';
 import '../index.css';
@@ -58,17 +57,24 @@ class App extends Component {
     );
   };
 
+  deleteContact = data => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== data),
+    }));
+  };
+
   render() {
     const { filter } = this.state;
+    const { deleteContact, onFilter, AddContactOnSubmit } = this;
     const visibleContacts = this.getVisibleContacts();
 
     return (
       <Container>
         <h1>Phonebook</h1>
-        <SubmitForm submittedProps={this.AddContactOnSubmit} />
+        <SubmitForm submittedProps={AddContactOnSubmit} />
         <h1>Contacts</h1>
-        <Filter value={filter} onChange={this.onFilter} />
-        <ContactList contacts={visibleContacts} />
+        <Filter value={filter} onChange={onFilter} />
+        <ContactList contacts={visibleContacts} deleteContact={deleteContact} />
         <ToastContainer />
       </Container>
     );
