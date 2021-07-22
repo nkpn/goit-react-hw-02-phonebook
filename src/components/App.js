@@ -40,13 +40,18 @@ class App extends Component {
 
   render() {
     const { contacts, filter } = this.state;
+
+    const normalizedFilter = this.state.filter.toLowerCase();
+    const visibleContacts = this.state.contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter),
+    );
     return (
       <Container>
         <h1>Phonebook</h1>
         <SubmitForm submittedProps={this.AddContactOnSubmit} />
         <h1>Contacts</h1>
         <Filter value={filter} onChange={this.onFilter} />
-        <ContactList contacts={contacts} />
+        <ContactList contacts={visibleContacts} />
       </Container>
     );
   }
