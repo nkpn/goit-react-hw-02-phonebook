@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
+import '../index.css';
+//* Components
 import Container from './Container';
 import SubmitForm from './SubmitForm';
 import ContactList from './ContactList';
-import '../index.css';
+import Filter from './Filter';
 
 class App extends Component {
   static defaultProps = {
@@ -22,7 +24,7 @@ class App extends Component {
 
   AddContactOnSubmit = data => {
     const contact = {
-      name: data.name.toLowerCase(),
+      name: data.name,
       number: data.number,
       id: data.id,
     };
@@ -32,13 +34,18 @@ class App extends Component {
     }));
   };
 
+  onFilter = event => {
+    this.setState({ filter: event.currentTarget.value });
+  };
+
   render() {
-    const { contacts } = this.state;
+    const { contacts, filter } = this.state;
     return (
       <Container>
         <h1>Phonebook</h1>
         <SubmitForm submittedProps={this.AddContactOnSubmit} />
         <h1>Contacts</h1>
+        <Filter value={filter} onChange={this.onFilter} />
         <ContactList contacts={contacts} />
       </Container>
     );
