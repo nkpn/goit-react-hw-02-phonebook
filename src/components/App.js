@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
+import notify from 'helpers/Toast';
+import { ToastContainer } from 'react-toastify';
 import '../index.css';
 //* Components
 import Container from './Container';
@@ -28,6 +30,15 @@ class App extends Component {
       number: data.number,
       id: data.id,
     };
+
+    if (
+      this.state.contacts.find(
+        contact => contact.name.toLowerCase() === data.name.toLowerCase(),
+      )
+    ) {
+      notify(data.name);
+      return;
+    }
 
     this.setState(preventState => ({
       contacts: [contact, ...preventState.contacts],
@@ -58,6 +69,7 @@ class App extends Component {
         <h1>Contacts</h1>
         <Filter value={filter} onChange={this.onFilter} />
         <ContactList contacts={visibleContacts} />
+        <ToastContainer />
       </Container>
     );
   }
